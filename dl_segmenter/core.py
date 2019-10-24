@@ -91,23 +91,39 @@ class DLSegmenter:
         tag = tag.split(' ')
         t1, pre_pos = [], None
         for i in range(len(sent)):
-            tokens = tag[i].split('-')
-            if len(tokens) == 2:
-                c, pos = tokens
+            # tokens = tag[i].split('-')
+            # if len(tokens) == 2:
+            #     c, pos = tokens
+            # else:
+            #     c = 'i'
+            #     pos = "<UNK>"
+            c='b'
+            tokens  = tag[i]
+            if tokens=='<UNK>':
+                c='i'
+                pos="<UNK>"
             else:
-                c = 'i'
-                pos = "<UNK>"
+                pos = tokens
 
             word = sent[i]
-            if c in 'sb':
+            if c in 'ie':
+                t1.append(word)
+                pre_pos = pos
+            else:
                 if len(t1) != 0:
                     cur_sent.append(''.join(t1))
                     cur_tag.append(pre_pos)
                 t1 = [word]
                 pre_pos = pos
-            elif c in 'ie':
-                t1.append(word)
-                pre_pos = pos
+            # if c in 'sb':
+            #     if len(t1) != 0:
+            #         cur_sent.append(''.join(t1))
+            #         cur_tag.append(pre_pos)
+            #     t1 = [word]
+            #     pre_pos = pos
+            # elif c in 'ie':
+            #     t1.append(word)
+            #     pre_pos = pos
 
         if len(t1) != 0:
             cur_sent.append(''.join(t1))

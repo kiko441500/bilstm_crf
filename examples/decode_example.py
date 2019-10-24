@@ -2,13 +2,20 @@ import time
 import logging
 from dl_segmenter import get_or_create, DLSegmenter
 
+src_dict_path = "D:\\copus\\src_dict.json"  # 源字典路径
+tgt_dict_path = "D:\\copus\\tgt_dict.json"  # 目标字典路径
+config_save_path = "D:\\copus\\default-config.json"  # 模型配置路径
+weights_save_path = "D:\\copus\\weights.01-0.05.h5"  # 模型权重保存路径
+
+
+
 if __name__ == '__main__':
     LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
-    segmenter: DLSegmenter = get_or_create("../data/default-config.json",
-                                           src_dict_path="../data/src_dict.json",
-                                           tgt_dict_path="../data/tgt_dict.json",
-                                           weights_path="../models/weights.32--0.18.h5")
+    segmenter: DLSegmenter = get_or_create(config_save_path,
+                                           src_dict_path,
+                                           tgt_dict_path,
+                                           weights_path=weights_save_path)
 
     texts = [
         "昨晚，英国首相特里萨•梅(TheresaMay)试图挽救其退欧协议的努力，在布鲁塞尔遭遇了严重麻烦。"

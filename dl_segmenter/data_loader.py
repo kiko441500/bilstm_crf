@@ -81,9 +81,10 @@ class DataLoader:
                 return X_train, Y_train, X_valid, Y_valid
             return X, Y
 
-    def generator_from_data(self, X, Y):
+    def generator_from_data(self, X, Y,f):
         steps = 0
         total_size = X.shape[0]
+        f.write("total_size:"+str(total_size)+'\r\n')
         while True:
             if steps >= self.shuffle_batch:
                 indicates = list(range(total_size))
@@ -95,8 +96,13 @@ class DataLoader:
             ret_x = X[sample_index:sample_index + self.batch_size]
             ret_y = Y[sample_index:sample_index + self.batch_size]
 
+            f.write("ret_x:" + str(list(ret_x)) + '\r\n')
+            f.write("ret_y:" + str(list(ret_y)) + '\r\n')
+
             if not self.sparse_target:
-                ret_y = to_categorical(ret_y, num_classes=self.tgt_vocab_size + 1)
+                f.write("use_one_hot" + '\r\n')
+                ret_y = to_categorical(ret_y, num_classes=self.tgt_vocab_size+1)
+                f.write("ret_y:====" + str(list(ret_y)) + '\r\n')
             else:
                 ret_y = np.expand_dims(ret_y, 2)
             yield ret_x, ret_y

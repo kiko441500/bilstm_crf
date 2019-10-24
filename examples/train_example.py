@@ -5,10 +5,27 @@ from dl_segmenter import get_or_create, save_config
 from dl_segmenter.custom.callbacks import LRFinder, SGDRScheduler, WatchScheduler
 from dl_segmenter.data_loader import DataLoader
 
+import pandas as pd
+# 显示所有列
+pd.set_option('display.max_columns', None)
+# 显示所有行
+pd.set_option('display.max_rows', None)
+
+
 if __name__ == '__main__':
-    h5_dataset_path = "D:\\copus\\new.hdf5"  # 转换为hdf5格式的数据集
-    config_save_path = "D:\\copus\\default-config.json"  # 模型配置路径
-    weights_save_path = "D:\\copus\\weights.{epoch:02d}-{val_loss:.2f}.h5"  # 模型权重保存路径
+    # h5_dataset_path = "D:\\copus\\new.hdf5"  # 转换为hdf5格式的数据集
+    # config_save_path = "D:\\copus\\default-config.json"  # 模型配置路径
+    # weights_save_path = "D:\\copus\\weights.{epoch:02d}-{val_loss:.2f}.h5"  # 模型权重保存路径
+    ##############对比测试数据的目录
+    h5_dataset_path = "D:\\copus\\test_icwb2\\processed_data.hdf5"  # 转换为hdf5格式的数据集
+    config_save_path = "D:\\copus\\test_icwb2\\default-config.json"  # 模型配置路径
+    weights_save_path = "D:\\copus\\test_icwb2\\weights.{epoch:02d}-{val_loss:.2f}.h5"  # 模型权重保存路径
+    log_dir = "D:\\copus\\test_icwb2\\log"
+    ###############
+
+
+
+
     # init_weights_path = "../models/weights.23-0.02.sgdr.h5"  # 预训练模型权重文件路径
     init_weights_path=None
     # embedding_file_path = "D:\\copus\\word embedding\\sgns.remnmin.char"  # 词向量文件路径，若不使用设为None
@@ -63,7 +80,7 @@ if __name__ == '__main__':
                          save_weights_only=True,
                          monitor='val_loss',
                          verbose=0)
-    log = TensorBoard(log_dir='../logs',
+    log = TensorBoard(log_dir=log_dir,
                       histogram_freq=0,
                       batch_size=data_loader.batch_size,
                       write_graph=True,
@@ -79,11 +96,19 @@ if __name__ == '__main__':
 
     X_train, Y_train, X_valid, Y_valid = DataLoader.load_data(h5_dataset_path, frac=0.8)
 
-    tokenizer.model.fit_generator(data_loader.generator_from_data(X_train, Y_train),
+    print(str(X_train))
+    print(str(Y_train))
+
+
+
+    file_path = "D:\\copus\\test_icwb2\\loglog"
+    loglog = open(file_path, 'w')  # 打开文件
+
+    tokenizer.model.fit_generator(data_loader.generator_from_data(X_train, Y_train,loglog),
                                   epochs=1,
                                   steps_per_epoch=steps_per_epoch,
-                                  validation_data=data_loader.generator_from_data(X_valid, Y_valid),
+                                  validation_data=data_loader.generator_from_data(X_valid, Y_valid,loglog),
                                   validation_steps=validation_steps,
                                   callbacks=[ck, log, lr_finder])
-
+    loglog.close()
     lr_finder.plot_loss()

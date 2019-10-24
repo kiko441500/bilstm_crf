@@ -12,8 +12,12 @@ if __name__ == '__main__':
     #
     # args = parser.parse_args()
 
-    txt_path = "D:\\copus\\new"
-    h5_path="D:\\copus\\new.hdf5"
+    # txt_path = "D:\\copus\\new"
+    # h5_path="D:\\copus\\new.hdf5"
+    #####测试数据集的目录
+    txt_path = "D:\\copus\\test_icwb2\\processed_data"
+    h5_path="D:\\copus\\test_icwb2\\processed_data.hdf5"
+
     src_dict_path="D:\\copus\\src_dict.json"
     tgt_dict_path="D:\\copus\\tgt_dict.json"
 

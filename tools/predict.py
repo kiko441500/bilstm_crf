@@ -3,21 +3,36 @@ import argparse
 from dl_segmenter import get_or_create
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="执行命令行分词")
-    parser.add_argument("-s", "--text", help="要进行分割的语句")
-    parser.add_argument("-f", "--file", help="要进行分割的文件。", default="../data/restore.utf8")
-    parser.add_argument("-o", "--out_file", help="分割完成后输出的文件。", default="../data/pred_text.utf8")
+    # parser = argparse.ArgumentParser(description="执行命令行分词")
+    # parser.add_argument("-s", "--text", help="要进行分割的语句")
+    # parser.add_argument("-f", "--file", help="要进行分割的文件。", default="../data/restore.utf8")
+    # parser.add_argument("-o", "--out_file", help="分割完成后输出的文件。", default="../data/pred_text.utf8")
+    #
+    # args = parser.parse_args()
 
-    args = parser.parse_args()
+    text="天上有无数个星星，那个最小的就是我。"
+    file=None
+    out_file=None
+    # src_dict_path = "D:\\copus\\src_dict.json"  # 源字典路径
+    # tgt_dict_path = "D:\\copus\\tgt_dict.json"  # 目标字典路径
+    # config_save_path = "D:\\copus\\default-config.json"  # 模型配置路径
+    # weights_save_path = "D:\\copus\\weights.01-0.05.h5"  # 模型权重保存路径
 
-    tokenizer = get_or_create("../data/default-config.json",
-                              src_dict_path="../data/src_dict.json",
-                              tgt_dict_path="../data/tgt_dict.json",
-                              weights_path="../models/weights.32--0.18.h5")
+    #测试数据集
+    src_dict_path = "D:\\copus\\src_dict.json"  # 源字典路径
+    tgt_dict_path = "D:\\copus\\tgt_dict.json"  # 目标字典路径
+    config_save_path = "D:\\copus\\test_icwb2\\default-config.json"  # 模型配置路径
+    weights_save_path = "D:\\copus\\test_icwb2\\weights.01-0.04.h5"  # 模型权重保存路径
 
-    text = args.text
-    file = args.file
-    out_file = args.out_file
+
+    tokenizer = get_or_create(config_save_path,
+                              src_dict_path=src_dict_path,
+                              tgt_dict_path=tgt_dict_path,
+                              weights_path=weights_save_path)
+
+    # text = args.text
+    # file = args.file
+    # out_file = args.out_file
 
     texts = []
     if text is not None:
